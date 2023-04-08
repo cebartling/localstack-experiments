@@ -16,7 +16,6 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
-import { CfnWebACL, CfnWebACLAssociation } from 'aws-cdk-lib/aws-wafv2';
 
 export class AppsyncExperiment1Stack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -27,21 +26,21 @@ export class AppsyncExperiment1Stack extends Stack {
       authenticationType: 'API_KEY',
       xrayEnabled: true,
     });
-    const apiKey = new CfnApiKey(this, 'graphql-api-key', {
+    const apiKey = new CfnApiKey(this, 'graphqlApiKey', {
       apiId: graphQLApi.attrApiId,
     });
-    const graphQLSchema = new CfnGraphQLSchema(this, 'graphql-api-schema', {
+    const graphQLSchema = new CfnGraphQLSchema(this, 'graphqlApiSchema', {
       apiId: graphQLApi.attrApiId,
       definition: readFileSync('./src/graphql/schema.graphql').toString(),
     });
     // Add lambda, plus the required datasource and resolvers, as well as create an invoke lambda role for AppSync
-    const invokeLambdaRole = new Role(this, 'AppSync-InvokeLambdaRole', {
+    const invokeLambdaRole = new Role(this, 'AppSyncInvokeLambdaRole', {
       assumedBy: new ServicePrincipal('appsync.amazonaws.com'),
     });
 
     const messagesLambdaFunction = new NodejsFunction(
       this,
-      'messages-lambda-id',
+      'messagesLambdaFunction',
       {
         entry: './src/lambda/index.ts',
         handler: 'handler',
@@ -50,7 +49,7 @@ export class AppsyncExperiment1Stack extends Stack {
       },
     );
 
-    const messagesDataSource = new CfnDataSource(this, 'messages-datasource', {
+    const messagesDataSource = new CfnDataSource(this, 'messagesDataSource', {
       apiId: graphQLApi.attrApiId,
       // Note: property 'name' cannot include hyphens
       name: 'MessagesDataSource',
@@ -61,7 +60,7 @@ export class AppsyncExperiment1Stack extends Stack {
       serviceRoleArn: invokeLambdaRole.roleArn,
     });
 
-    const messagesResolver = new CfnResolver(this, 'messages-resolver', {
+    const messagesResolver = new CfnResolver(this, 'messagesResolver', {
       apiId: graphQLApi.attrApiId,
       typeName: 'Query',
       fieldName: 'messages',
@@ -70,7 +69,7 @@ export class AppsyncExperiment1Stack extends Stack {
 
     const welcomeMessageResolver = new CfnResolver(
       this,
-      'welcomeMessage-resolver',
+      'welcomeMessageResolver',
       {
         apiId: graphQLApi.attrApiId,
         typeName: 'MessageQuery',
@@ -81,7 +80,7 @@ export class AppsyncExperiment1Stack extends Stack {
 
     const farewellMessageResolver = new CfnResolver(
       this,
-      'farewellMessage-resolver',
+      'farewellMessageResolver',
       {
         apiId: graphQLApi.attrApiId,
         typeName: 'MessageQuery',
@@ -104,40 +103,40 @@ export class AppsyncExperiment1Stack extends Stack {
       }),
     );
 
-    const webAcl = new CfnWebACL(this, 'web-acl', {
-      defaultAction: {
-        allow: {},
-      },
-      scope: 'REGIONAL',
-      visibilityConfig: {
-        cloudWatchMetricsEnabled: true,
-        metricName: 'webACL',
-        sampledRequestsEnabled: true,
-      },
-      rules: [
-        {
-          name: 'AWS-AWSManagedRulesCommonRuleSet',
-          priority: 1,
-          overrideAction: { none: {} },
-          statement: {
-            managedRuleGroupStatement: {
-              name: 'AWSManagedRulesCommonRuleSet',
-              vendorName: 'AWS',
-              excludedRules: [{ name: 'SizeRestrictions_BODY' }],
-            },
-          },
-          visibilityConfig: {
-            cloudWatchMetricsEnabled: true,
-            metricName: 'awsCommonRules',
-            sampledRequestsEnabled: true,
-          },
-        },
-      ],
-    });
-
-    new CfnWebACLAssociation(this, 'web-acl-association', {
-      webAclArn: webAcl.attrArn,
-      resourceArn: graphQLApi.attrArn,
-    });
+    // const webAcl = new CfnWebACL(this, 'web-acl', {
+    //   defaultAction: {
+    //     allow: {},
+    //   },
+    //   scope: 'REGIONAL',
+    //   visibilityConfig: {
+    //     cloudWatchMetricsEnabled: true,
+    //     metricName: 'webACL',
+    //     sampledRequestsEnabled: true,
+    //   },
+    //   rules: [
+    //     {
+    //       name: 'AWS-AWSManagedRulesCommonRuleSet',
+    //       priority: 1,
+    //       overrideAction: { none: {} },
+    //       statement: {
+    //         managedRuleGroupStatement: {
+    //           name: 'AWSManagedRulesCommonRuleSet',
+    //           vendorName: 'AWS',
+    //           excludedRules: [{ name: 'SizeRestrictions_BODY' }],
+    //         },
+    //       },
+    //       visibilityConfig: {
+    //         cloudWatchMetricsEnabled: true,
+    //         metricName: 'awsCommonRules',
+    //         sampledRequestsEnabled: true,
+    //       },
+    //     },
+    //   ],
+    // });
+    //
+    // new CfnWebACLAssociation(this, 'web-acl-association', {
+    //   webAclArn: webAcl.attrArn,
+    //   resourceArn: graphQLApi.attrArn,
+    // });
   }
 }
