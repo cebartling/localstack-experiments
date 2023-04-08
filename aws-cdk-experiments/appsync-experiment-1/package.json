@@ -5,11 +5,19 @@
     "appsync-experiment-1": "bin/appsync-experiment-1.js"
   },
   "scripts": {
-    "build": "tsc",
+    "lint": "eslint --max-warnings=0 \"**/*.ts\"",
+    "build": "npm run codegen && tsc",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "codegen": "graphql-codegen --config ./graphql-codegen.yml"
+    "codegen": "graphql-codegen --config ./graphql-codegen.yml",
+    "prettier": "prettier --write .",
+    "cdk:synth:local": "cdklocal synth --verbose --profile localstack --verbose",
+    "cdk:bootstrap:local": "cdklocal bootstrap --profile localstack --verbose",
+    "cdk:deploy:local": "npm run build && cdklocal deploy --profile localstack",
+    "cdk:destroy:local": "cdklocal destroy --profile localstack --verbose",
+    "cdk:diff:local": "cdklocal diff --profile localstack --verbose",
+    "cdk:watch:local": "cdklocal watch --profile localstack --verbose"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.3.0",
