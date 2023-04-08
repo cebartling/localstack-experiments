@@ -1,9 +1,16 @@
-# Welcome to your CDK TypeScript project
+# Lambda experiment 1
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`LambdaExperiment1Stack`)
+## Introduction
+
+You should explore the contents of this project. It demonstrates a CDK app with an instance of a
+stack (`LambdaExperiment1Stack`)
 which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
+
+## Dependencies
+
+`npm i --save @aws-cdk/aws-apigatewayv2-alpha @aws-cdk/aws-apigatewayv2-integrations-alpha`
 
 ## Useful commands
 
