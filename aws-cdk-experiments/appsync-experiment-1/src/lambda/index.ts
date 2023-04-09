@@ -25,6 +25,8 @@ export const handler: AppSyncResolverHandler<QueryArgs, any> = async (
 
 const resolveMessageQuery = (event: AppSyncResolverEvent<MessageQueryArgs>) => {
   switch (event.info.fieldName) {
+    case 'helloWorld':
+      return resolveHelloWorld(event);
     case 'welcomeMessage':
       return resolveWelcomeMessage(event);
     case 'farewellMessage':
@@ -32,6 +34,12 @@ const resolveMessageQuery = (event: AppSyncResolverEvent<MessageQueryArgs>) => {
     default:
       throw `Unexpected query "${event.info.parentTypeName}.${event.info.fieldName}" found.`;
   }
+};
+
+const resolveHelloWorld = (
+  event: AppSyncResolverEvent<MessageQueryWelcomeMessageArgs>,
+) => {
+  return `Hello world at ${new Date().toISOString()}!`;
 };
 
 const resolveWelcomeMessage = (

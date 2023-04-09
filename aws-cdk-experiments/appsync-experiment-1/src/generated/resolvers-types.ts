@@ -17,6 +17,7 @@ export type Scalars = {
 export type MessageQuery = {
   __typename?: 'MessageQuery';
   farewellMessage: Scalars['String'];
+  helloWorld: Scalars['String'];
   welcomeMessage: Scalars['String'];
 };
 
@@ -123,6 +124,7 @@ export type ResolversParentTypes = ResolversObject<{
 
 export type MessageQueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageQuery'] = ResolversParentTypes['MessageQuery']> = ResolversObject<{
   farewellMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryFarewellMessageArgs, 'name'>>;
+  helloWorld?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryWelcomeMessageArgs, 'name'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

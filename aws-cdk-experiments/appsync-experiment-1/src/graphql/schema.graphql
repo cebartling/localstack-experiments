@@ -3,6 +3,7 @@ type Query {
 }
 
 type MessageQuery {
+  helloWorld: String!
   welcomeMessage(name: String!): String!
   farewellMessage(name: String!): String!
 }
