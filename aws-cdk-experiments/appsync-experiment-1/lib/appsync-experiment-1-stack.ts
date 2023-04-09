@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import {
   CfnApiKey,
@@ -21,8 +21,8 @@ export class AppsyncExperiment1Stack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const graphQLApi = new CfnGraphQLApi(this, 'graphql-api-id', {
-      name: 'graphql-api-name',
+    const graphQLApi = new CfnGraphQLApi(this, 'graphqlApi', {
+      name: 'graphqlApiName',
       authenticationType: 'API_KEY',
       xrayEnabled: true,
     });
@@ -138,5 +138,9 @@ export class AppsyncExperiment1Stack extends Stack {
     //   webAclArn: webAcl.attrArn,
     //   resourceArn: graphQLApi.attrArn,
     // });
+
+    new CfnOutput(this, 'graphqlUrl', { value: graphQLApi.attrGraphQlUrl });
+    new CfnOutput(this, 'apiId', { value: graphQLApi.attrApiId || '' });
+    new CfnOutput(this, 'apiKey', { value: apiKey.attrApiKey || '' });
   }
 }
