@@ -1,55 +1,19 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import {
-  MessageQueryFarewellMessageArgs,
-  MessageQueryWelcomeMessageArgs,
-} from '../generated/resolvers-types';
-
-type QueryArgs = MessageQueryArgs;
-type MessageQueryArgs =
-  | MessageQueryWelcomeMessageArgs
-  | MessageQueryFarewellMessageArgs;
+import { Query } from '../generated/resolvers-types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handler: AppSyncResolverHandler<QueryArgs, any> = async (
-  event,
-) => {
-  switch (event.info.parentTypeName) {
-    case 'Query':
-      return Promise.resolve({});
-    case 'MessageQuery':
-      return resolveMessageQuery(event);
-    default:
-      throw `Unexpected query "${event.info.parentTypeName}" found.`;
-  }
-};
-
-const resolveMessageQuery = (event: AppSyncResolverEvent<MessageQueryArgs>) => {
+export const handler: AppSyncResolverHandler<Query, any> = async (
+  event: AppSyncResolverEvent<Query>,
+): Promise<string> => {
+  console.log('====> Event:', JSON.stringify(event, null, 2));
   switch (event.info.fieldName) {
     case 'helloWorld':
       return resolveHelloWorld(event);
-    case 'welcomeMessage':
-      return resolveWelcomeMessage(event);
-    case 'farewellMessage':
-      return resolveFarewellMessage(event);
     default:
-      throw `Unexpected query "${event.info.parentTypeName}.${event.info.fieldName}" found.`;
+      throw `Unexpected query "${event.info.fieldName}" found.`;
   }
 };
 
-const resolveHelloWorld = (
-  event: AppSyncResolverEvent<MessageQueryWelcomeMessageArgs>,
-) => {
+const resolveHelloWorld = (event: AppSyncResolverEvent<Query>): string => {
   return `Hello world at ${new Date().toISOString()}!`;
-};
-
-const resolveWelcomeMessage = (
-  event: AppSyncResolverEvent<MessageQueryWelcomeMessageArgs>,
-) => {
-  return `Hello, ${event.arguments.name}!`;
-};
-
-const resolveFarewellMessage = (
-  event: AppSyncResolverEvent<MessageQueryFarewellMessageArgs>,
-) => {
-  return `Goodbye, ${event.arguments.name}!`;
 };

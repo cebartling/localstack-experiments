@@ -60,39 +60,47 @@ export class AppsyncExperiment1Stack extends Stack {
       serviceRoleArn: invokeLambdaRole.roleArn,
     });
 
-    const messagesResolver = new CfnResolver(this, 'messagesResolver', {
+    const helloWorldResolver = new CfnResolver(this, 'helloWorldResolver', {
       apiId: graphQLApi.attrApiId,
       typeName: 'Query',
-      fieldName: 'messages',
+      fieldName: 'helloWorld',
       dataSourceName: messagesDataSource.name,
     });
 
-    const welcomeMessageResolver = new CfnResolver(
-      this,
-      'welcomeMessageResolver',
-      {
-        apiId: graphQLApi.attrApiId,
-        typeName: 'MessageQuery',
-        fieldName: 'welcomeMessage',
-        dataSourceName: messagesDataSource.name,
-      },
-    );
+    // const messagesResolver = new CfnResolver(this, 'messagesResolver', {
+    //   apiId: graphQLApi.attrApiId,
+    //   typeName: 'Query',
+    //   fieldName: 'messages',
+    //   dataSourceName: messagesDataSource.name,
+    // });
 
-    const farewellMessageResolver = new CfnResolver(
-      this,
-      'farewellMessageResolver',
-      {
-        apiId: graphQLApi.attrApiId,
-        typeName: 'MessageQuery',
-        fieldName: 'farewellMessage',
-        dataSourceName: messagesDataSource.name,
-      },
-    );
+    // const welcomeMessageResolver = new CfnResolver(
+    //   this,
+    //   'welcomeMessageResolver',
+    //   {
+    //     apiId: graphQLApi.attrApiId,
+    //     typeName: 'MessageQuery',
+    //     fieldName: 'welcomeMessage',
+    //     dataSourceName: messagesDataSource.name,
+    //   },
+    // );
+    //
+    // const farewellMessageResolver = new CfnResolver(
+    //   this,
+    //   'farewellMessageResolver',
+    //   {
+    //     apiId: graphQLApi.attrApiId,
+    //     typeName: 'MessageQuery',
+    //     fieldName: 'farewellMessage',
+    //     dataSourceName: messagesDataSource.name,
+    //   },
+    // );
 
     // Ensures that the resolvers are created after the schema.
-    messagesResolver.addDependency(graphQLSchema);
-    welcomeMessageResolver.addDependency(graphQLSchema);
-    farewellMessageResolver.addDependency(graphQLSchema);
+    helloWorldResolver.addDependency(graphQLSchema);
+    // messagesResolver.addDependency(graphQLSchema);
+    // welcomeMessageResolver.addDependency(graphQLSchema);
+    // farewellMessageResolver.addDependency(graphQLSchema);
 
     // Ensures that AppSync is able to invoke the lambda function.
     invokeLambdaRole.addToPolicy(

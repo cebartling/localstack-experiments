@@ -1,0 +1,1 @@
+{"errorType":"TypeError","errorMessage":"Cannot read properties of undefined (reading 'parentTypeName')","trace":["TypeError: Cannot read properties of undefined (reading 'parentTypeName')","    at Runtime.handler (/var/task/index.js:27:22)","    at Runtime.handleOnceNonStreaming (file:///var/runtime/index.mjs:1086:29)"]}

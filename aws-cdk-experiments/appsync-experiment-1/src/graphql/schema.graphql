@@ -1,9 +1,10 @@
 type Query {
-  messages: MessageQuery!
+  helloWorld: String!
+#  messages: MessageQuery!
 }
 
-type MessageQuery {
-  helloWorld: String!
-  welcomeMessage(name: String!): String!
-  farewellMessage(name: String!): String!
-}
+#type MessageQuery {
+#
+#  welcomeMessage(name: String!): String!
+#  farewellMessage(name: String!): String!
+#}

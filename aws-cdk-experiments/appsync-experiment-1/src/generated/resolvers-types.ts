@@ -4,7 +4,6 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,26 +13,9 @@ export type Scalars = {
   Float: number;
 };
 
-export type MessageQuery = {
-  __typename?: 'MessageQuery';
-  farewellMessage: Scalars['String'];
-  helloWorld: Scalars['String'];
-  welcomeMessage: Scalars['String'];
-};
-
-
-export type MessageQueryFarewellMessageArgs = {
-  name: Scalars['String'];
-};
-
-
-export type MessageQueryWelcomeMessageArgs = {
-  name: Scalars['String'];
-};
-
 export type Query = {
   __typename?: 'Query';
-  messages: MessageQuery;
+  helloWorld: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -109,7 +91,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  MessageQuery: ResolverTypeWrapper<MessageQuery>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
@@ -117,24 +98,15 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
-  MessageQuery: MessageQuery;
   Query: {};
   String: Scalars['String'];
 }>;
 
-export type MessageQueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageQuery'] = ResolversParentTypes['MessageQuery']> = ResolversObject<{
-  farewellMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryFarewellMessageArgs, 'name'>>;
-  helloWorld?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryWelcomeMessageArgs, 'name'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  messages?: Resolver<ResolversTypes['MessageQuery'], ParentType, ContextType>;
+  helloWorld?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
-  MessageQuery?: MessageQueryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 }>;
 
