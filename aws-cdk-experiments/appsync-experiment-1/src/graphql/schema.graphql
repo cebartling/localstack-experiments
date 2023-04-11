@@ -1,5 +1,15 @@
+type Stock {
+  symbol: String!
+  name: String!
+#  price: Float!
+#  change: Float!
+#  changePercent: Float!
+#  lastUpdated: String!
+}
+
 type Query {
   helloWorld: String!
+  symbolLookup(symbol: String!): Stock!
 #  messages: MessageQuery!
 }
 

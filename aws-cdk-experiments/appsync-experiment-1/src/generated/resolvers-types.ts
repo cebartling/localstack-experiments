@@ -4,6 +4,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,6 +17,18 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   helloWorld: Scalars['String'];
+  symbolLookup: Stock;
+};
+
+
+export type QuerySymbolLookupArgs = {
+  symbol: Scalars['String'];
+};
+
+export type Stock = {
+  __typename?: 'Stock';
+  name: Scalars['String'];
+  symbol: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -92,6 +105,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Query: ResolverTypeWrapper<{}>;
+  Stock: ResolverTypeWrapper<Stock>;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
 
@@ -99,14 +113,23 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Query: {};
+  Stock: Stock;
   String: Scalars['String'];
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   helloWorld?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  symbolLookup?: Resolver<ResolversTypes['Stock'], ParentType, ContextType, RequireFields<QuerySymbolLookupArgs, 'symbol'>>;
+}>;
+
+export type StockResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stock'] = ResolversParentTypes['Stock']> = ResolversObject<{
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
+  Stock?: StockResolvers<ContextType>;
 }>;
 

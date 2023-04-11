@@ -67,6 +67,13 @@ export class AppsyncExperiment1Stack extends Stack {
       dataSourceName: messagesDataSource.name,
     });
 
+    const symbolLookupResolver = new CfnResolver(this, 'symbolLookupResolver', {
+      apiId: graphQLApi.attrApiId,
+      typeName: 'Query',
+      fieldName: 'symbolLookup',
+      dataSourceName: messagesDataSource.name,
+    });
+
     // const messagesResolver = new CfnResolver(this, 'messagesResolver', {
     //   apiId: graphQLApi.attrApiId,
     //   typeName: 'Query',
@@ -98,6 +105,7 @@ export class AppsyncExperiment1Stack extends Stack {
 
     // Ensures that the resolvers are created after the schema.
     helloWorldResolver.addDependency(graphQLSchema);
+    symbolLookupResolver.addDependency(graphQLSchema);
     // messagesResolver.addDependency(graphQLSchema);
     // welcomeMessageResolver.addDependency(graphQLSchema);
     // farewellMessageResolver.addDependency(graphQLSchema);
