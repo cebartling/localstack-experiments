@@ -20,8 +20,8 @@
     "cdk:watch:local": "cdklocal watch --profile localstack --verbose"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^3.3.0",
-    "@graphql-codegen/typescript-resolvers": "^3.2.0",
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/typescript-resolvers": "^3.2.1",
     "@types/aws-lambda": "^8.10.114",
     "@types/jest": "^29.5.1",
     "@types/node": "18.15.13",
